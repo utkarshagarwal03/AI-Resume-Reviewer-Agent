@@ -32,16 +32,16 @@ class AgentState(TypedDict):
 
 def get_llm(api_key: Optional[str] = None) -> Any:
     """
-    Initializes the Google Gemini 2.5 Flash model with a fallback to 1.5 Flash
+    Initializes the Google Gemini 3.5 Flash model with a fallback to 1.5 Flash
     using the provided API key or falling back to the GOOGLE_API_KEY environment variable.
     """
     key = api_key or os.getenv("GOOGLE_API_KEY")
     if not key:
         raise ValueError("Google Gemini API Key is missing. Please set it in the environment or sidebar.")
     
-    # Primary model: Gemini 2.5 Flash
+    # Primary model: Gemini 3.5 Flash
     llm_primary = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash",
         google_api_key=key,
         temperature=0.2
     )
