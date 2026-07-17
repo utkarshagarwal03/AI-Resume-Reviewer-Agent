@@ -30,21 +30,30 @@ class AgentState(TypedDict):
     report_markdown: str
     error: Optional[str]
 
-def get_llm(api_key: Optional[str] = None) -> ChatGoogleGenerativeAI:
+def get_llm(api_key: Optional[str] = None) -> Any:
     """
-    Initializes the Google Gemini 2.5 Flash model using the provided API key
-    or falling back to the GOOGLE_API_KEY environment variable.
+    Initializes the Google Gemini 2.5 Flash model with a fallback to 1.5 Flash
+    using the provided API key or falling back to the GOOGLE_API_KEY environment variable.
     """
     key = api_key or os.getenv("GOOGLE_API_KEY")
     if not key:
         raise ValueError("Google Gemini API Key is missing. Please set it in the environment or sidebar.")
     
-    # Try gemini-2.5-flash. If the package or account doesn't support it, the model name is transparently passed to Gemini API.
-    return ChatGoogleGenerativeAI(
+    # Primary model: Gemini 2.5 Flash
+    llm_primary = ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
         google_api_key=key,
         temperature=0.2
     )
+    
+    # Fallback model: Gemini 1.5 Flash
+    llm_fallback = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash",
+        google_api_key=key,
+        temperature=0.2
+    )
+    
+    return llm_primary.with_fallbacks([llm_fallback])
 
 import json
 import re
