@@ -1,6 +1,7 @@
 streamlit>=1.30.0
 langgraph>=0.0.15
 langchain>=0.1.0
+langchain-text-splitters>=0.0.1
 langchain-community>=0.0.10
 langchain-google-genai>=0.0.6
 faiss-cpu>=1.7.4
