@@ -2,10 +2,18 @@ import logging
 from typing import Optional
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
 from rag.embeddings import get_embeddings
 from agents import get_llm
+
+try:
+    from langchain_classic.chains import ConversationalRetrievalChain
+except ImportError:
+    from langchain.chains import ConversationalRetrievalChain
+
+try:
+    from langchain_classic.memory import ConversationBufferMemory
+except ImportError:
+    from langchain.memory import ConversationBufferMemory
 
 logger = logging.getLogger(__name__)
 
