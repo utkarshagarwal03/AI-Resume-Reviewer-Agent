@@ -58,10 +58,22 @@ def get_llm(api_key: Optional[str] = None) -> Any:
 import json
 import re
 
-def clean_and_parse_json(text: str) -> dict:
+def clean_and_parse_json(text: Any) -> dict:
     """
     Cleans markdown code fences and parses JSON string.
+    Handles inputs that are strings, lists, or dictionary blocks.
     """
+    if isinstance(text, list):
+        parts = []
+        for part in text:
+            if isinstance(part, str):
+                parts.append(part)
+            elif isinstance(part, dict) and "text" in part:
+                parts.append(part["text"])
+        text = "".join(parts)
+    elif not isinstance(text, str):
+        text = str(text)
+
     # Remove markdown code fences if present
     cleaned = re.sub(r"^```(?:json)?\n", "", text.strip(), flags=re.MULTILINE)
     cleaned = re.sub(r"\n```$", "", cleaned, flags=re.MULTILINE)
