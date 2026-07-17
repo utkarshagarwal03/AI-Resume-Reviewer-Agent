@@ -14,6 +14,6 @@ def get_embeddings(api_key: str = None) -> GoogleGenerativeAIEmbeddings:
         
     logger.info("Initializing Google Generative AI Embeddings...")
     return GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
+        model="models/text-embedding-004",
         google_api_key=key
     )
